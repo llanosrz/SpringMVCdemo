@@ -57,7 +57,7 @@ public class MainController {
      * Metodo que recibe los datos procedente de los controles del formulario
      */
     @PostMapping("/altaEstudiante")
-    public void altaEstudiante() {
-
+    public String altaEstudiante() {
+        return "views/altaEstudianteSuccessed";
     }
 }
