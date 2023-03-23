@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.dao.TelefonoDao;
+import com.example.entities.Estudiante;
 import com.example.entities.Telefono;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class TelefonoServiceImpl  implements TelefonoService {
@@ -25,13 +28,21 @@ public class TelefonoServiceImpl  implements TelefonoService {
     }
 
     @Override
+    @Transactional
     public void save(Telefono telefono) {
         telefonoDao.save(telefono);
     }
 
     @Override
+    @Transactional
     public void deleteById(int idTelefono) {
         telefonoDao.deleteById(idTelefono);
+    }
+
+    @Override
+    @Transactional
+    public void deleteByEstudiante(Estudiante estudiante) {
+        telefonoDao.deleteByEstudiante(estudiante);
     }
     
 }

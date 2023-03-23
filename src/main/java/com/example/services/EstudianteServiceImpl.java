@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.example.dao.EstudianteDao;
 import com.example.entities.Estudiante;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class EstudianteServiceImpl implements EstudianteService {
 
@@ -25,13 +27,21 @@ public class EstudianteServiceImpl implements EstudianteService {
     }
 
     @Override
+    @Transactional
     public void save(Estudiante estudiante) {
         estudianteDao.save(estudiante);
     }
 
     @Override
+    @Transactional
     public void deleteById(int idEstudiante) {
         estudianteDao.deleteById(idEstudiante);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Estudiante estudiante) {
+        estudianteDao.delete(estudiante);
     }
     
 }

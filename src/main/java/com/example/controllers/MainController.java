@@ -3,6 +3,7 @@ package com.example.controllers;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -59,7 +60,9 @@ public class MainController {
 
         List<Facultad> facultades = facultadService.findAll();
 
-        model.addAttribute("estudiante", new Estudiante());
+        Estudiante estudiante = new Estudiante();
+
+        model.addAttribute("estudiante", estudiante);
         model.addAttribute("facultades", facultades);
 
         return "views/formularioAltaEstudiante";
@@ -68,13 +71,16 @@ public class MainController {
     /**
      * Metodo que recibe los datos procedente de los controles del formulario
      */
-    @PostMapping("/altaEstudiante")
+    @PostMapping("/altaModificacionEstudiante")
     public String altaEstudiante(@ModelAttribute Estudiante estudiante,
                     @RequestParam(name = "numerosTelefonos") String telefonosRecibidos) {
             
             LOG.info("telefonos recibidos" + telefonosRecibidos);
 
+            estudianteService.save(estudiante);
+
             List<String> listadoNumerosTelefonos = null;
+        
 
             if(telefonosRecibidos != null){
                 String[] arrayTelefonos = telefonosRecibidos.split(";");
@@ -83,9 +89,11 @@ public class MainController {
 
             }
 
-            estudianteService.save(estudiante);
+            if(listadoNumerosTelefonos != null){  
+                // Borrar todos los teléfonos que tenga el estudiante
+             // si hay que insertar nuevos
 
-            if(listadoNumerosTelefonos != null){
+             telefonoService.deleteByEstudiante(estudiante);
                 listadoNumerosTelefonos.stream().forEach(n -> {
                     Telefono telefonoObject = Telefono
                     .builder()
@@ -106,9 +114,34 @@ public class MainController {
  */
 
  @GetMapping("/frmActualizar/{id}")
- public String frmActualizarEstudiante(@PathVariable(name= "id") int idEstudiante){
+ public String frmActualizarEstudiante(@PathVariable(name= "id") int idEstudiante, Model model){
+    
 
-    return "redirect:/listar";
+    Estudiante estudiante = estudianteService.findById(idEstudiante);
+    List<Telefono> todosTelefonos = telefonoService.findAll();
+    List<Telefono> telefonosDelEstudiante = todosTelefonos.stream()
+        .filter(telefono -> telefono.getEstudiante().getId() == idEstudiante)
+        .collect(Collectors.toList());
+    String numerosDeTelefono = telefonosDelEstudiante.stream()
+    .map(telefono -> telefono.getNumero())
+    .collect(Collectors.joining(";"));
+    List<Facultad> facultades = facultadService.findAll();
+
+
+    model.addAttribute("estudiante", estudiante);
+    model.addAttribute("telefonos", numerosDeTelefono);
+    model.addAttribute("facultades", facultades);
+
+    return "views/formularioAltaEstudiante";
  }
+
+    @GetMapping("/borrar/{id}")
+    public String borrarEstudiante(@PathVariable(name="id") int idEstudiante){
+
+        estudianteService.delete(estudianteService.findById(idEstudiante));
+
+        return "redirect:/listar";
+
+    }
     }
 
