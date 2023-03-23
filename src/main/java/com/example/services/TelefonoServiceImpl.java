@@ -12,7 +12,7 @@ import com.example.entities.Telefono;
 import jakarta.transaction.Transactional;
 
 @Service
-public class TelefonoServiceImpl  implements TelefonoService {
+public class TelefonoServiceImpl implements TelefonoService {
 
     @Autowired
     private TelefonoDao telefonoDao;
@@ -43,6 +43,11 @@ public class TelefonoServiceImpl  implements TelefonoService {
     @Transactional
     public void deleteByEstudiante(Estudiante estudiante) {
         telefonoDao.deleteByEstudiante(estudiante);
+    }
+
+    @Override
+    public List<Telefono> findByEstudiante(Estudiante estudiante) {
+        return telefonoDao.findByEstudiante(estudiante);
     }
     
 }

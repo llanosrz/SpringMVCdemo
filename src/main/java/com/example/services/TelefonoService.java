@@ -6,9 +6,10 @@ import com.example.entities.Estudiante;
 import com.example.entities.Telefono;
 
 public interface TelefonoService {
-    public List<Telefono> findAll();
-    public Telefono findById(int idTelefono);
-    public void save(Telefono telefono);
-    public void deleteById(int idTelefono);
+    List<Telefono> findAll();
+    Telefono findById(int idTelefono);
+    void save(Telefono telefono);
+    void deleteById(int idTelefono);
     void deleteByEstudiante(Estudiante estudiante);
+    List<Telefono> findByEstudiante(Estudiante estudiante);
 }
