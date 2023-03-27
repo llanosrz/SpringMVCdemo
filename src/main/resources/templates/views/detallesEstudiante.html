@@ -10,10 +10,12 @@
     <h1 th:text="'Detalles del Estudiante' + ' ' + ${estudiante.nombre} + ' '
     + ${estudiante.primerApellido} + ' ' + ${estudiante.segundoApellido}"></h1>
 
+    <img th:src="@{/images/}+${estudiante.foto}" alt="Imagen de un gato">
+
     <div>
         Telefonos:
         <ul>
-            <li th:each=" telefono : ${telefonos}" th:text="${telefono}"></li>
+            <li th:each=" telefono : ${telefonos}" th:text="${telefono}" ></li>
         </ul>
     </div>
 </body>

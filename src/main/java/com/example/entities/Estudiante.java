@@ -54,6 +54,8 @@ public class Estudiante implements Serializable {
     private Genero genero;
     private double beca;
 
+    private String foto;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST) 
     @JoinColumn(name = "idFacultad")
     private Facultad facultad;
